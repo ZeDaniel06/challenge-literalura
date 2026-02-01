@@ -8,4 +8,5 @@ import java.util.List;
 public interface LivroRepository extends JpaRepository<Livro, Long> {
     List<Livro> findByIdioma(String idioma);
     List<Livro> findByTituloContainingIgnoreCase(String titulo);
+    List<Livro> findTop10ByOrderByNumDownloadsDesc();
 }

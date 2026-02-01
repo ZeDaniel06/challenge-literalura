@@ -9,4 +9,5 @@ import java.util.List;
 public interface AutorRepository extends JpaRepository<Autor, Long> {
     @Query("SELECT a FROM Autor a WHERE a.birth_year < :ano AND a.death_year > :ano")
     List<Autor> buscarAutorPorAno(Integer ano);
+    List<Autor> findByNameContainingIgnoreCase(String nome);
 }
