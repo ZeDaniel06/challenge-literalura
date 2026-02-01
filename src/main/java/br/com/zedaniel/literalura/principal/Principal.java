@@ -122,24 +122,37 @@ public class Principal {
         System.out.println("Digite o nome do livro que deseja buscar: ");
         var busca = scanner.nextLine();
 
-        String url = BASE + BUSCA + URLEncoder.encode(busca);
-
-        String json = consumoAPI.obterDados(url);
-        System.out.println(json);
-        DadosResults dadosResults = conversor.obterDados(json, DadosResults.class);
-
-        if(dadosResults.livros().size() > 0){
-            Livro livro = new Livro(dadosResults.livros().get(0));
-            System.out.println(dadosResults.livros().size());
-
-            System.out.println(livro);
-            livro.getAutor().getLivros().add(livro);
-            autorRepository.save(livro.getAutor());
-            livroRepository.save(livro);
+        List<Livro> livros = livroRepository.findByTituloContainingIgnoreCase(busca);
+        if(livros.size() > 0){
+            System.out.println("Livro encontrado na base de dados!");
+            System.out.println(livros.get(0));
         }
         else {
-            System.out.println("Nenhum resultado encontrado!");
+            System.out.println("Livro não encontrado na base de dados.");
+            System.out.println("Buscando na api Gutendex...");
+            String url = BASE + BUSCA + URLEncoder.encode(busca);
+
+            String json = consumoAPI.obterDados(url);
+            System.out.println(json);
+            DadosResults dadosResults = conversor.obterDados(json, DadosResults.class);
+
+            if(dadosResults.livros().size() > 0){
+                System.out.println("Livro encontrado na api gutendex!");
+                Livro livro = new Livro(dadosResults.livros().get(0));
+                System.out.println(dadosResults.livros().size());
+
+                System.out.println(livro);
+                livro.getAutor().getLivros().add(livro);
+                autorRepository.save(livro.getAutor());
+                livroRepository.save(livro);
+                System.out.println("Livro registrado na base de dados.");
+            }
+            else {
+                System.out.println("Nenhum resultado encontrado!");
+            }
         }
+
+
 
 
     }

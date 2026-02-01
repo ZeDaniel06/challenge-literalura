@@ -44,11 +44,11 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "Autor{" +
-                "name='" + name + '\'' +
-                ", birth_year=" + birth_year +
-                ", death_year=" + death_year +
-                '}';
+        return "\n------------\n" +
+                "Nome: " + name +
+                "\nAno de nascimento: " + birth_year +
+                "\nAno de falecimento: " + death_year +
+                "\n------------\n";
     }
 
     public Long getId() {
